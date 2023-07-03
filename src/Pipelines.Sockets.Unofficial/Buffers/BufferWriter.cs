@@ -13,7 +13,7 @@ namespace Pipelines.Sockets.Unofficial.Buffers
     /// <summary>
     /// Represents a <typeparamref name="T"/> with lifetime management over the data
     /// </summary>
-    public readonly struct Owned<T> : IDisposable
+    internal readonly struct Owned<T> : IDisposable
     {
         private readonly Action<T> _onDispose;
         private readonly T _value;
@@ -54,7 +54,7 @@ namespace Pipelines.Sockets.Unofficial.Buffers
     /// <summary>
     /// Implements a buffer-writer over arbitrary memory
     /// </summary>
-    public abstract partial class BufferWriter<T> : IDisposable, IBufferWriter<T>
+    internal abstract partial class BufferWriter<T> : IDisposable, IBufferWriter<T>
     {
         private protected int BlockSize { get; }
 
@@ -383,9 +383,9 @@ namespace Pipelines.Sockets.Unofficial.Buffers
                 if (Volatile.Read(ref _count) > 0 && Interlocked.Decrement(ref _count) == 0)
                 {
                     DecrLiveCount();
-                    Memory = default;
                     DetachNext(); // break the chain, in case of dangling references
                     ReleaseImpl();
+                    Memory = default;
                 }
             }
 
