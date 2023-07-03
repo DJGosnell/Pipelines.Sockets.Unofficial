@@ -65,6 +65,11 @@ namespace Pipelines.Sockets.Unofficial.Arenas
         /// </summary>
         protected SequenceSegment(Memory<T> memory, SequenceSegment<T> previous = null)
         {
+            Setup(memory, previous);
+        }
+
+        protected void Setup(Memory<T> memory, SequenceSegment<T> previous = null)
+        {
             if (previous is not null)
             {
                 var oldNext = previous.Next;
